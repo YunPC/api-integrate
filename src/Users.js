@@ -6,19 +6,20 @@ function Users() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setUsers(null)
-        setError(null)
-        setLoading(true)
-        const response = await axios.get('https://jsonplaceholder.typicode.com/users/')
-        setUsers(response.data)
-      } catch (e) {
-        setError(e)
-      }
-      setLoading(false)
+  const fetchUsers = async () => {
+    try {
+      setUsers(null)
+      setError(null)
+      setLoading(true)
+      const response = await axios.get('https://jsonplaceholder.typicode.com/users/')
+      setUsers(response.data)
+    } catch (e) {
+      setError(e)
     }
+    setLoading(false)
+  }
+
+  useEffect(() => {
     fetchUsers()
   }, [])
 
@@ -27,13 +28,16 @@ function Users() {
   if (!users) return null
 
   return (
-    <ul>
-      {users.map((user) => (
-        <li key={user.id}>
-          {user.username} ({user.name})
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            {user.username} ({user.name})
+          </li>
+        ))}
+      </ul>
+      <button onClick={fetchUsers}>다시 불러오기</button>
+    </>
   )
 }
 
